@@ -21,12 +21,7 @@ public class CustJwtDecoder implements JwtDecoder {
 
     @Override
     public Jwt decode(String token) throws JwtException {
-        try {
             System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-decode");
             return this.defaultDecoder.decode(token);
-        } catch (Exception e) {
-            throw new BadJwtException(e.getMessage());
-        }
-
     }
 }

@@ -36,6 +36,7 @@
 
 
     <dependencies>
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -62,7 +63,11 @@
             <version>1.18.30</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.sap.cloud.security.xsuaa</groupId>
+            <artifactId>spring-security-compatibility</artifactId>
+            <version>3.4.0</version>
+        </dependency>
 
         <dependency>
             <groupId>com.sap.hcp.cf.logging</groupId>
@@ -75,6 +80,14 @@
             <version>${cf-logging.version}</version>
         </dependency>
 
+
+            <dependency>
+                <groupId>com.sap.conn.jco</groupId>
+                <artifactId>sapjco3</artifactId>
+                <version>3.1.9</version>
+                <scope>system</scope>
+                <systemPath>${project.basedir}/dependencies/BOOT-INF/lib/sapjco3.jar</systemPath>
+            </dependency>
 
 
 <!--        <dependency>-->
@@ -149,6 +162,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>3.2.4</version>
+                <configuration>
+                    <includeSystemScope>false</includeSystemScope>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -168,6 +184,7 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
     <profiles>
