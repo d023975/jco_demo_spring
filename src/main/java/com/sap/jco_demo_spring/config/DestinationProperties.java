@@ -9,11 +9,12 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 //@AllArgsConstructor
 @Configuration
-@ConfigurationProperties("vcap.services.xsuaa-papm-broker.credentials")
-public class XsuaaProperties
-{
+@ConfigurationProperties("vcap.services.destination-papm-lite.credentials")
+public class DestinationProperties {
     private String clientid;
+    private String clientsecret;
     private String tenantid;
-
-
+    private String url;
+    private String tenantmode;
+    private String uaadomain;
 }

@@ -5,16 +5,16 @@ import com.sap.cloud.security.spring.token.SpringSecurityContext;
 import com.sap.cloud.security.token.SecurityContext;
 import com.sap.cloud.security.token.Token;
 import com.sap.conn.jco.*;
+import com.sap.jco_demo_spring.config.DestinationProperties;
+import com.sap.jco_demo_spring.config.XsuaaProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.sap.conn.jco.AbapException;
-import com.sap.cloud.security.token.Token;
 
 
 
@@ -29,44 +29,60 @@ public class WelcomeController {
     @Autowired
     XsuaaServiceConfigurations xsuaaServiceConfigurations;
 
+    @Autowired
+    XsuaaProperties xsuaaProperties;
 
-    @GetMapping("/welcome")
+    @Autowired
+    DestinationProperties destinationProperties;
+
+
+    @GetMapping("/welcome/client")
     public Welcome handleWelcome(@RequestParam(value = "name", defaultValue = "Enthusiast") String name) {
 
 
-//
-//        Token token = SpringSecurityContext.getAccessToken();
-//
-//        String clientId = SpringSecurityContext.getToken().getClientId();
-//        try {
-//
-//            SecurityContext.setToken(token);
-//            JCoDestination destination = JCoDestinationManager.getDestination("QKXCLNT910");
-//            System.out.println(destination.getDestinationName());
-//            JCoRepository repo = destination.getRepository();
-//            JCoFunction stfcConnection = repo.getFunction("STFC_CONNECTION");
-//            JCoParameterList imports = stfcConnection.getImportParameterList();
-//            imports.setValue("REQUTEXT", "SAP BTP Connectivity runs with JCo");
-//            stfcConnection.execute(destination);
-//            JCoParameterList exports = stfcConnection.getExportParameterList();
-//            String echotext = exports.getString("ECHOTEXT");
-//            String resptext = exports.getString("RESPTEXT");
-//
-//        } catch (AbapException ae) {
-//
-//            ae.printStackTrace();
-//
-//            // just for completeness: As this function module does not have an exception
-//
-//            // in its signature, this exception cannot occur. But you should always
-//
-//            // take care of AbapExceptions
-//
-//        } catch (JCoException e) {
-//
-//            e.printStackTrace();
-//        }
+             name =   xsuaaProperties.getClientid();
 
-        return new Welcome(String.format(strDefine, name));
+
+
+        return new Welcome(String.format(strDefine, name),destinationProperties);
     }
+
+    @GetMapping("/welcome/destination")
+    @PreAuthorize("hasAuthority('run_rfc')")
+    public Welcome handleDestination(@RequestParam(value = "destination", required=true) String destination, @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+
+        String result = "initial";
+        try {
+            JCoDestination  dest =  JCoDestinationManager.getDestination(destination);
+            result= dest.getDestinationID();
+
+
+            JCoRepository repo = dest.getRepository();
+            JCoFunction stfcConnection = repo.getFunction("STFC_CONNECTION");
+            JCoParameterList imports = stfcConnection.getImportParameterList();
+            imports.setValue("REQUTEXT", "SAP BTP Connectivity runs with JCo");
+            stfcConnection.execute(dest);
+            JCoParameterList exports = stfcConnection.getExportParameterList();
+            String echotext = exports.getString("ECHOTEXT");
+            String resptext = exports.getString("RESPTEXT");
+
+
+            result = result + "||||||" + echotext + "||||||" + resptext;
+
+
+
+        } catch (JCoException e) {
+            result = e.getMessage();
+        }
+
+
+
+
+        return new Welcome(result,destinationProperties);
+    }
+
+
+
+
+
 }
