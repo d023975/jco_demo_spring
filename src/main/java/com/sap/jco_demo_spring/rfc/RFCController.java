@@ -1,9 +1,6 @@
-package com.sap.jco_demo_spring.welcome;
+package com.sap.jco_demo_spring.rfc;
 
 import com.sap.cloud.security.spring.config.XsuaaServiceConfigurations;
-import com.sap.cloud.security.spring.token.SpringSecurityContext;
-import com.sap.cloud.security.token.SecurityContext;
-import com.sap.cloud.security.token.Token;
 import com.sap.conn.jco.*;
 import com.sap.jco_demo_spring.config.DestinationProperties;
 import com.sap.jco_demo_spring.config.XsuaaProperties;
@@ -20,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-public class WelcomeController {
+public class RFCController {
 
     @Autowired
     private Environment environment;
@@ -36,20 +33,20 @@ public class WelcomeController {
     DestinationProperties destinationProperties;
 
 
-    @GetMapping("/welcome/client")
-    public Welcome handleWelcome(@RequestParam(value = "name", defaultValue = "Enthusiast") String name) {
+    @GetMapping("/rfc/client")
+    public RFC handleRFC(@RequestParam(value = "name", defaultValue = "Enthusiast") String name) {
 
 
              name =   xsuaaProperties.getClientid();
 
 
 
-        return new Welcome(String.format(strDefine, name),destinationProperties);
+        return new RFC(String.format(strDefine, name),destinationProperties);
     }
 
-    @GetMapping("/welcome/destination")
+    @GetMapping("/rfc/destination")
     @PreAuthorize("hasAuthority('run_rfc')")
-    public Welcome handleDestination(@RequestParam(value = "destination", required=true) String destination, @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
+    public RFC handleDestination(@RequestParam(value = "destination", required=true) String destination, @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
 
         String result = "initial";
         try {
@@ -78,7 +75,7 @@ public class WelcomeController {
 
 
 
-        return new Welcome(result,destinationProperties);
+        return new RFC(result,destinationProperties);
     }
 
 

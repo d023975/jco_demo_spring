@@ -13,7 +13,7 @@ public class CustJwtDecoder implements JwtDecoder {
     private final JwtDecoder defaultDecoder;
 
     public CustJwtDecoder(XsuaaServiceConfiguration xsuaaServiceConfiguration){
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-CustJwtDecoder");
+        System.out.println("----------------------------------------------------------------------CustJwtDecoder");
         JwtDecoderBuilder jwtDecoderBuilder = new JwtDecoderBuilder();
         jwtDecoderBuilder.withXsuaaServiceConfiguration(xsuaaServiceConfiguration);
         this.defaultDecoder = jwtDecoderBuilder.build();
@@ -21,7 +21,7 @@ public class CustJwtDecoder implements JwtDecoder {
 
     @Override
     public Jwt decode(String token) throws JwtException {
-            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX-decode");
+            System.out.println("---------------------------------------------------------------------JWT-decode");
             return this.defaultDecoder.decode(token);
     }
 }

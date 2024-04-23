@@ -43,7 +43,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz ->
                         authz
-                                .requestMatchers(antMatcher(GET,"/welcome/**")).hasAuthority("run_rfc")
+                                .requestMatchers(antMatcher(GET,"/rfc/**")).hasAuthority("run_rfc")
                                 .requestMatchers(antMatcher(GET,"/actuator/**")).permitAll()
                                 .requestMatchers("/*").authenticated()
                                 .anyRequest().permitAll())
@@ -76,8 +76,8 @@ public class SecurityConfig {
             return groupAuthorities;
         }
     }
-
-    private JwtDecoder jwtDecoder() {
+    @Bean
+    public JwtDecoder jwtDecoder() {
         return new CustJwtDecoder(xsuaaServiceConfiguration);
     }
 }
