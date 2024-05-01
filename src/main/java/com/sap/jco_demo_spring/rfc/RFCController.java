@@ -69,6 +69,7 @@ public class RFCController {
 
 
         } catch (JCoException e) {
+            e.printStackTrace();
             result = e.getMessage();
         }
 

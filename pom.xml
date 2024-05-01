@@ -71,13 +71,13 @@
         </dependency>
 
 
-            <dependency>
+<!--            <dependency>
                 <groupId>com.sap.conn.jco</groupId>
                 <artifactId>sapjco3</artifactId>
                 <version>3.1.9</version>
                 <scope>system</scope>
                 <systemPath>${project.basedir}/dependencies/BOOT-INF/lib/sapjco3.jar</systemPath>
-            </dependency>
+            </dependency>-->
 
 
 <!--        <dependency>-->
@@ -116,7 +116,7 @@
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>com.sap.cloud</groupId>
             <artifactId>neo-java-web-api</artifactId>
             <version>4.73.10</version>
@@ -127,7 +127,7 @@
             <artifactId>java-api</artifactId>
             <version>3.3.5</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -179,12 +179,48 @@
     </build>
     <profiles>
         <profile>
-            <id>local-dev</id>
+            <id>dev</id>
+            <activation>
+                <os>
+                    <family>Linux</family>
+                </os>
+                <activeByDefault>false</activeByDefault>
+            </activation>
             <properties>
                 <spring.profiles.active>local-dev</spring.profiles.active>
             </properties>
-
+            <dependencies>
+                <dependency>
+                    <groupId>com.sap.conn.jco</groupId>
+                    <artifactId>sapjco3</artifactId>
+                    <version>3.1.9</version>
+                    <scope>system</scope>
+                    <systemPath>${project.basedir}/dependencies/BOOT-INF/lib/sapjco3.jar</systemPath>
+                </dependency>
+            </dependencies>
         </profile>
-
+        <profile>
+            <id>prod</id>
+            <properties>
+                <spring.profiles.active>cloud</spring.profiles.active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.sap.cloud</groupId>
+                    <artifactId>neo-java-web-api</artifactId>
+                    <version>4.73.10</version>
+                    <scope>provided</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.sap.cloud.security</groupId>
+                    <artifactId>java-api</artifactId>
+                    <version>3.3.5</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+        </profile>
     </profiles>
 </project>
