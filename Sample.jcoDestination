@@ -1,0 +1,23 @@
+#Sample destination configuration
+# see here for further details :   https://help.sap.com/docs/connectivity/sap-btp-connectivity-cf/target-system-configuration
+jco.client.ashost=abap_host_name
+# or jco.client.mshost=message_server
+# jco.client.r3name=SID
+# jco.client.msserv=1234
+# jco.client.group=PUBLIC
+# or jco.client.wshost=abap_host_name
+# jco.client.wsport=44300
+jco.client.sysnr=00
+jco.client.client=000
+jco.client.user=user
+jco.client.passwd=passwd
+jco.client.lang=en
+#
+#further useful standard properties (see documentation in DestinationDataProvider)
+#those are independent from the connection type
+jco.destination.repository_roundtrip_optimization=1
+jco.client.serialization_format=columnBased
+jco.client.network=lan
+jco.destination.pool_capacity=5
+jco.destination.expiration_time=600000
+jco.destination.expiration_check_period=120000
